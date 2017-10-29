@@ -31,7 +31,7 @@ class youtube extends REST_Controller {
 		}elseif(empty($access_token)){
 			$this->response(array('status'=>'failure','message' => 'key required'), 400);
 		}else{
-			$url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$access_token.'&channelId='.$channel_id.'&maxResults=50&fields=pageInfo(totalResults),items(id,snippet(publishedAt,title))&part=snippet';
+			$url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$access_token.'&channelId='.$channel_id.'&maxResults=10&fields=pageInfo(totalResults),items(id,snippet(publishedAt,title))&part=snippet';
 			
 			$response = json_decode(file_get_contents($url),true);
 			
