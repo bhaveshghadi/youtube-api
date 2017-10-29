@@ -38,5 +38,25 @@ class youtube extends REST_Controller {
 			$this->response(array('status'=>'success','total_records' => $response['pageInfo']['totalResults'],'data' => $response['items']), 200);
 		}
 	}
+	
+	public function playlistitems_get(){
+		
+		$access_token = $this->get('key');
+		$playlistid = $this->get('id');
+		
+		if(empty($playlistid)){
+			$this->response(array('status'=>'failure','message' => 'playlist id required'), 400);
+		}elseif(empty($access_token)){
+			$this->response(array('status'=>'failure','message' => 'key required'), 400);
+		}else{
+			$url = 'https://www.googleapis.com/youtube/v3/playlistItems?key='.$access_token.'&playlistId='.$playlistid.'&maxResults=10&fields=pageInfo(totalResults),items(snippet(publishedAt,title,description,thumbnails,resourceId(videoId)))&part=snippet';
+			
+			$response = json_decode(file_get_contents($url),true);
+			
+			$this->response(array('status'=>'success','total_records' => $response['pageInfo']['totalResults'],'data' => $response['items']), 200);
+		}
+	}
+	
+	
 }
 ?>
