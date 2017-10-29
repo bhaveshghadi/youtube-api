@@ -31,11 +31,12 @@ class youtube extends REST_Controller {
 		}elseif(empty($access_token)){
 			$this->response(array('status'=>'failure','message' => 'key required'), 400);
 		}else{
-			$url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$access_token.'&channelId='.$channel_id.'&maxResults=50&fields=items(id,snippet(publishedAt,title))&part=snippet';
+			$url = 'https://www.googleapis.com/youtube/v3/playlists?key='.$access_token.'&channelId='.$channel_id.'&maxResults=50&fields=pageInfo(totalResults),items(id,snippet(publishedAt,title))&part=snippet';
 			
 			$response = json_decode(file_get_contents($url),true);
 			
-			$this->response(array('status'=>'success','data' => $response), 200);
+			$this->response(array('status'=>'success','total_records' => $response['pageInfo']['totalResults'],'data' => $response['items']), 200);
 		}
 	}
 }
+?>
